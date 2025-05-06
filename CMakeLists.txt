@@ -19,10 +19,10 @@ if (NOT Slint_FOUND)
     FetchContent_MakeAvailable(Slint)
 endif (NOT Slint_FOUND)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp)
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY WIN32_EXECUTABLE TRUE)
 target_link_libraries(${PROJECT_NAME} PRIVATE Slint::Slint)
-slint_target_sources(${PROJECT_NAME} my_application_ui.slint)
+slint_target_sources(${PROJECT_NAME} ui/my_application_ui.slint)
 target_sources(${PROJECT_NAME} PRIVATE res/app.rc)
 
 # On Windows, copy the Slint DLL next to the application binary so that it's found.

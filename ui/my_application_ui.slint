@@ -1,4 +1,4 @@
-import "./res/AlegreyaSans-ExtraBold.ttf";
+import "./../res/AlegreyaSans-ExtraBold.ttf";
 import { LineEdit, VerticalBox, Button, HorizontalBox, StandardButton } from "std-widgets.slint";
 
 component MyButton inherits Rectangle {
@@ -76,7 +76,7 @@ export component HelloWorld inherits Window {
     title: "MyAppliction";
     width: 820px;
     height: 580px;
-    icon: @image-url("res/CPP.ico");
+    icon: @image-url("./../res/CPP.ico");
     background: #1E1F22;
 
     GridLayout {
@@ -122,7 +122,7 @@ export component HelloWorld inherits Window {
 				Button {
 				    width: 40px;
 				    height: 40px;
-				    icon: @image-url("res/check.svg");
+				    icon: @image-url("./../res/check.svg");
 				    clicked => {
 				        root.process-textbox1-value();
 				    }
@@ -130,7 +130,7 @@ export component HelloWorld inherits Window {
                 Button {
                     width: 40px;
                     height: 40px;
-				    icon: @image-url("res/remove.svg");
+				    icon: @image-url("./../res/remove.svg");
 				    clicked => {
 						textbox1.text = "";
 				    }
@@ -161,7 +161,7 @@ export component HelloWorld inherits Window {
 				Button {
 	                    width: 40px;
 	                    height: 40px;
-	                    icon: @image-url("res/check.svg");
+	                    icon: @image-url("./../res/check.svg");
 	                    clicked => {
 	                        root.process-textbox2-value();
 	                    }
@@ -169,7 +169,7 @@ export component HelloWorld inherits Window {
 	            Button {
 	                width: 40px;
 	                height: 40px;
-	                icon: @image-url("res/remove.svg");
+	                icon: @image-url("./../res/remove.svg");
 	                clicked => {
 	                    textbox2.text = "";
 	                }
@@ -200,7 +200,7 @@ export component HelloWorld inherits Window {
                 Button {
                     width: 40px;
                     height: 40px;
-                    icon: @image-url("res/check.svg");
+                    icon: @image-url("./../res/check.svg");
                     clicked => {
                         root.process-textbox3-value();
                     }
@@ -208,7 +208,7 @@ export component HelloWorld inherits Window {
                 Button {
                     width: 40px;
                     height: 40px;
-                    icon: @image-url("res/remove.svg");
+                    icon: @image-url("./../res/remove.svg");
                     clicked => {
                         textbox3.text = "";
                     }
