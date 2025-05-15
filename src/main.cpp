@@ -274,9 +274,7 @@ private:
         std::ranges::reverse(str);
         uint32_t len = str.length();
 
-        char temp[len + 1];
-        strncpy(temp, str.c_str(), len);
-        temp[len] = '\0';
+        std::string temp = str;
 
         try
         {
@@ -289,7 +287,7 @@ private:
                     temp[i] = '(';
             }
 
-            str = '(' + std::string(temp) + ')';
+            str = '(' + temp + ')';
             len = str.length();
 
             for (uint32_t i = 0; i < len; i++)
@@ -394,13 +392,13 @@ int main()
 		    if ((ExpressionEvaluate::isOperator(str[1]) && ExpressionEvaluate::isOperator(str[str.length() - 2])) || (str[0] == '(' && str[str.length() - 1] == ')'))
 		    {
 		        auto list = ExpressionEvaluate::Evaluate(str, 2);
-		
+
 		        if (list.first.length() == list.second.length())
 		        {
 		            ui->set_my_textbox1(static_cast<slint::SharedString>(list.first));
 		            ui->set_my_textbox3(static_cast<slint::SharedString>(list.second));
 		        }
-		        else 
+		        else
 		        	goto second_block;
 		    }
 		    else
