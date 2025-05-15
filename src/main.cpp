@@ -355,12 +355,12 @@ int main()
     auto ui = HelloWorld::create();
 
     ui->on_process_textbox1_value([&]
-        {
-            std::string str = static_cast<std::string>(ui->get_my_textbox1());
+    {
+		std::string str = static_cast<std::string>(ui->get_my_textbox1());
 
-            if (!str.empty())
-            {
-                if (ExpressionEvaluate::isOperator(str[0]) && str[0] != '(')
+           if (!str.empty())
+           {
+           	if (ExpressionEvaluate::isOperator(str[0]) && str[0] != '(')
                 {
                     auto list = ExpressionEvaluate::Evaluate(str, 1);
 
@@ -376,47 +376,48 @@ int main()
                 {
                     first_block:
 #ifdef _WIN32
-                    std::system("wscript run_hidden.vbs");
+				std::system("wscript run_hidden.vbs");
 #else
-                        ui->set_my_textbox2("Wrong Expression");
-                        ui->set_my_textbox3("Wrong Expression");
+				ui->set_my_textbox2("Wrong Expression");
+				ui->set_my_textbox3("Wrong Expression");
 #endif
                 }
             }
-        });
+	});
 
     ui->on_process_textbox2_value([&]
-        {
-            std::string str = static_cast<std::string>(ui->get_my_textbox2());
-
-    if (!str.empty())
     {
-        if ((ExpressionEvaluate::isOperator(str[1]) && ExpressionEvaluate::isOperator(str[str.length() - 2])) || (str[0] == '(' && str[str.length() - 1] == ')'))
-        {
-            auto list = ExpressionEvaluate::Evaluate(str, 2);
+		std::string str = static_cast<std::string>(ui->get_my_textbox2());
 
-            if (list.first.length() == list.second.length())
-            {
-                ui->set_my_textbox1(static_cast<slint::SharedString>(list.first));
-                ui->set_my_textbox3(static_cast<slint::SharedString>(list.second));
-            }
-            else goto second_block;
-        }
-        else
-        {
-            second_block:
+		if (!str.empty())
+		{
+		    if ((ExpressionEvaluate::isOperator(str[1]) && ExpressionEvaluate::isOperator(str[str.length() - 2])) || (str[0] == '(' && str[str.length() - 1] == ')'))
+		    {
+		        auto list = ExpressionEvaluate::Evaluate(str, 2);
+		
+		        if (list.first.length() == list.second.length())
+		        {
+		            ui->set_my_textbox1(static_cast<slint::SharedString>(list.first));
+		            ui->set_my_textbox3(static_cast<slint::SharedString>(list.second));
+		        }
+		        else 
+		        	goto second_block;
+		    }
+		    else
+		    {
+		        second_block:
 #if _WIN32
-            std::system("wscript run_hidden.vbs");
+				std::system("wscript run_hidden.vbs");
 #else
-                ui->set_my_textbox1("Wrong Expression");
-                ui->set_my_textbox3("Wrong Expression");
+				ui->set_my_textbox1("Wrong Expression");
+				ui->set_my_textbox3("Wrong Expression");
 #endif
-        }
-    }
-        });
+		    }
+		}
+	});
 
     ui->on_process_textbox3_value([&]
-        {
+    {
             std::string str = static_cast<std::string>(ui->get_my_textbox3());
 
             if (!str.empty())
@@ -443,7 +444,7 @@ int main()
 #endif
                 }
             }
-        });
+	});
 
     ui->run();
     return 0;

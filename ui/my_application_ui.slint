@@ -65,21 +65,21 @@ export component HelloWorld inherits Window {
 
     GridLayout {
 		padding-top: 50px;
-        spacing-vertical: 50px;
-        spacing-horizontal: 20px;
+		spacing-vertical: 50px;
+		spacing-horizontal: 20px;
 
         // Title (centered across both columns)
         Row {
 	        Text {
 				horizontal-alignment: center;
-	            text: "CONVERTER";
-	            vertical-alignment: center;
-	            color: @linear-gradient(90deg, #833AB4 40%, #FD1D1D 50%, #FCB045 75%);
-	            font-size: 40px;
-	            font-family: "Alegreya Sans";
-	            height: 50px;
-	            width: root.width;
-	            colspan: 2;
+				text: "CONVERTER";
+				vertical-alignment: center;
+				color: @linear-gradient(90deg, #833AB4 40%, #FD1D1D 50%, #FCB045 75%);
+				font-size: 40px;
+				font-family: "Alegreya Sans";
+				height: 50px;
+				width: root.width;
+				colspan: 2;
 			}
 		}
 
@@ -99,10 +99,11 @@ export component HelloWorld inherits Window {
             HorizontalBox {
 				 textbox1 := LineEdit {
 					placeholder-text: "Enter the Expression";
-	                height: 40px;
-                    font-size: 18px;
+	                		height: 40px;
+                    		font-size: 18px;
 					width: 290px;
 				}
+				
 				Button {
 				    width: 40px;
 				    height: 40px;
@@ -110,11 +111,12 @@ export component HelloWorld inherits Window {
 				    clicked => {
 				        root.process-textbox1-value();
 				    }
-                }
+                		}
+                
                 Button {
                     width: 40px;
                     height: 40px;
-				    icon: @image-url("./../res/remove.svg");
+			    icon: @image-url("./../res/remove.svg");
 				    clicked => {
 						textbox1.text = "";
 				    }
@@ -206,9 +208,9 @@ export component HelloWorld inherits Window {
 				width: root.width;
 				alignment: center;
 				MyButton {
-				    text: "Clear all";
+					text: "Clear all";
 					width: 120px;
-				    height: 40px;
+					height: 40px;
 				    clicked => {
 				        textbox1.text = "";
 				        textbox2.text = "";
