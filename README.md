@@ -30,20 +30,14 @@ git clone -j8 https://github.com/Spike271/Converter.git
 
 ### For Windows (Visual Studio)
 
-1. Create and navigate to the build directory:
-   ```bash
-   mkdir build
-   cd build
-   ```
-
-2. Generate build files:
+1. Generate build files:
    ```bash
    cmake -B build
    ```
 
-3. Build the project:
+2. Build the project:
    ```bash
-   cmake --build build -j8
+   cmake --build build -j8 --config Release
    ```
 
 ### For Other Platforms (Also works for Windows)
@@ -96,7 +90,7 @@ Infix to Postfix:
 
 ### Supported Operations
 
-- Basic arithmetic operations (+, -, *, /)
+- Basic arithmetic operations (+, -, *, /, ^)
 - Parentheses for grouping in infix notation
 - Single-character operands (a-z, A-Z, 1–9)
 
