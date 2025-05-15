@@ -1,7 +1,12 @@
+#ifdef _MSC_VER
+    #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 #include <cctype>
+#include <cstring>
+#include <format>
 #include <stack>
 #include <string>
-#include <cstring>
 #include "my_application_ui.h"
 
 class ExpressionEvaluate

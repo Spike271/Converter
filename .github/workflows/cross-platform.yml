@@ -23,6 +23,9 @@ jobs:
           - os: windows-latest
             c_compiler: gcc
             cpp_compiler: g++
+          - os: windows-latest
+            c_compiler: clang
+            cpp_compiler: clang++
           # Linux configurations
           - os: ubuntu-latest
             c_compiler: gcc
@@ -50,7 +53,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y ninja-build
+        sudo apt-get install -y ninja-build libx11-dev
 
     - name: Set reusable strings
       id: strings
