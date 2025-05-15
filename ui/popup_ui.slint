@@ -1,0 +1,24 @@
+import "./../res/AlegreyaSans-ExtraBold.ttf";
+import { VerticalBox, StandardButton } from "std-widgets.slint";
+
+export component PopupWindow inherits Dialog {
+    width: 270px;
+    height: 100px;
+    always-on-top: true;
+    title: "Error";
+
+    callback clicked();
+
+    VerticalBox {
+        Text {
+            text: "Please enter valid expression";
+            font-size: 18px;
+        }
+        StandardButton {
+            kind: ok;
+            clicked => {
+                root.clicked();
+            }
+        }
+    }
+}

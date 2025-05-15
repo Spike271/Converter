@@ -355,34 +355,39 @@ int main()
     auto ui = HelloWorld::create();
 
     ui->on_process_textbox1_value([&]
-    {
-        std::string str = static_cast<std::string>(ui->get_my_textbox1());
-
-        if (!str.empty())
         {
-            if (ExpressionEvaluate::isOperator(str[0]) && str[0] != '(')
-            {
-                auto list = ExpressionEvaluate::Evaluate(str, 1);
+            std::string str = static_cast<std::string>(ui->get_my_textbox1());
 
-                if (str.length() == list.second.length())
-                {
-                    ui->set_my_textbox2(static_cast<slint::SharedString>(list.first));
-                    ui->set_my_textbox3(static_cast<slint::SharedString>(list.second));
-                }
-                else goto first_block;
-            }
-            else
+            if (!str.empty())
             {
-                first_block:
-                ui->set_my_textbox2("Wrong Expression");
-                ui->set_my_textbox3("Wrong Expression");
+                if (ExpressionEvaluate::isOperator(str[0]) && str[0] != '(')
+                {
+                    auto list = ExpressionEvaluate::Evaluate(str, 1);
+
+                    if (str.length() == list.second.length())
+                    {
+                        ui->set_my_textbox2(static_cast<slint::SharedString>(list.first));
+                        ui->set_my_textbox3(static_cast<slint::SharedString>(list.second));
+                    }
+                    else
+                        goto first_block;
+                }
+                else
+                {
+                    first_block:
+#ifdef _WIN32
+                    std::system("wscript run_hidden.vbs");
+#else
+                        ui->set_my_textbox2("Wrong Expression");
+                        ui->set_my_textbox3("Wrong Expression");
+#endif
+                }
             }
-        }
-    });
+        });
 
     ui->on_process_textbox2_value([&]
-    {
-        std::string str = static_cast<std::string>(ui->get_my_textbox2());
+        {
+            std::string str = static_cast<std::string>(ui->get_my_textbox2());
 
     if (!str.empty())
     {
@@ -400,37 +405,45 @@ int main()
         else
         {
             second_block:
-            ui->set_my_textbox1("Wrong Expression");
-            ui->set_my_textbox3("Wrong Expression");
+#if _WIN32
+            std::system("wscript run_hidden.vbs");
+#else
+                ui->set_my_textbox1("Wrong Expression");
+                ui->set_my_textbox3("Wrong Expression");
+#endif
         }
     }
-    });
+        });
 
     ui->on_process_textbox3_value([&]
-    {
-        std::string str = static_cast<std::string>(ui->get_my_textbox3());
-
-    if (!str.empty())
-    {
-        if (ExpressionEvaluate::isOperator(str[str.length() - 1]) && str[str.length() - 1] != ')')
         {
-            auto list = ExpressionEvaluate::Evaluate(str, 3);
+            std::string str = static_cast<std::string>(ui->get_my_textbox3());
 
-            if (str.length() == list.first.length())
+            if (!str.empty())
             {
-                ui->set_my_textbox1(static_cast<slint::SharedString>(list.first));
-                ui->set_my_textbox2(static_cast<slint::SharedString>(list.second));
+                if (ExpressionEvaluate::isOperator(str[str.length() - 1]) && str[str.length() - 1] != ')')
+                {
+                    auto list = ExpressionEvaluate::Evaluate(str, 3);
+
+                    if (str.length() == list.first.length())
+                    {
+                        ui->set_my_textbox1(static_cast<slint::SharedString>(list.first));
+                        ui->set_my_textbox2(static_cast<slint::SharedString>(list.second));
+                    }
+                    else goto third_block;
+                }
+                else
+                {
+                    third_block:
+#if _WIN32
+                    std::system("wscript run_hidden.vbs");
+#else
+                    ui->set_my_textbox1("Wrong Expression");
+                    ui->set_my_textbox2("Wrong Expression");
+#endif
+                }
             }
-            else goto third_block;
-        }
-        else
-        {
-            third_block:
-            ui->set_my_textbox1("Wrong Expression");
-            ui->set_my_textbox2("Wrong Expression");
-        }
-    }
-});
+        });
 
     ui->run();
     return 0;
