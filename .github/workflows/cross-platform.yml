@@ -89,7 +89,7 @@ jobs:
         echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
 
     - name: Upload Build Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: executable-${{ matrix.os }}-${{ matrix.c_compiler }}
         path: ${{ steps.exe-name.outputs.exe_path }}
@@ -106,7 +106,7 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
     steps:
     - name: Download All Artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: artifacts
 
