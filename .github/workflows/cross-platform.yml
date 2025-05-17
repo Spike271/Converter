@@ -82,7 +82,7 @@ jobs:
       id: exe-name
       shell: bash
       run: |
-        EXE_PATH="${{ steps.strings.outputs.build-output-dir }}/bin/Converter"
+        EXE_PATH="${{ steps.strings.outputs.build-output-dir }}/bin/my_application"
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           EXE_PATH="${EXE_PATH}.exe"
         fi
