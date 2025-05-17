@@ -18,28 +18,18 @@ jobs:
       fail-fast: false
       
       matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
         build_type: [ Release ]
+        cpp_compiler: [ g++, clang++, cl ] 
         
-        include:
-          # Windows configurations
-          - os: windows-latest
-            cpp_compiler: cl
-          - os: windows-latest
-            cpp_compiler: g++
-          - os: windows-latest
-            cpp_compiler: clang++
-            
+        exclude:            
           # Linux configurations
           - os: ubuntu-latest
-            cpp_compiler: g++
-          - os: ubuntu-latest
-            cpp_compiler: clang++
+            cpp_compiler: cl
             
           # macOS configurations
           - os: macos-latest
-            cpp_compiler: clang++
-          - os: macos-latest
-            cpp_compiler: g++
+            cpp_compiler: cl
 
     steps:
     - uses: actions/checkout@v4
@@ -47,7 +37,7 @@ jobs:
       # Windows compiler setup
     - name: Setup MSVC (Windows)
       if: matrix.os == 'windows-latest' && matrix.cpp_compiler == 'cl'
-      uses: ilammy/msvc-dev-cmd@v2
+      uses: ilammy/msvc-dev-cmd@v1
 
     - name: Install MSYS2 compilers (Windows)
       if: matrix.os == 'windows-latest' && (matrix.cpp_compiler == 'g++' || matrix.cpp_compiler == 'clang++')
