@@ -54,6 +54,11 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build libx11-dev
+        
+    # Setup MSVC environment for Windows when using 'cl'
+    - name: Setup MSVC
+      if: matrix.os == 'windows-latest' && matrix.cpp_compiler == 'cl'
+      uses: microsoft/setup-msbuild@v2
 
     - name: Set reusable strings
       id: strings
