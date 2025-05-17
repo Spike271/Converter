@@ -18,9 +18,7 @@ jobs:
       fail-fast: false
       
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
         build_type: [ Release ]
-        cpp_complier: [ g++, clang++, cl ]
         
         include:
           # Windows configurations
@@ -42,15 +40,27 @@ jobs:
             cpp_compiler: clang++
           - os: macos-latest
             cpp_compiler: g++
-            
-        exclude:
-          - os: macos-latest
-            cpp_compiler: cl
-          - os: ubuntu-latest
-            cpp_compiler: cl
 
     steps:
     - uses: actions/checkout@v4
+
+      # Windows compiler setup
+    - name: Setup MSVC (Windows)
+      if: matrix.os == 'windows-latest' && matrix.cpp_compiler == 'cl'
+      uses: ilammy/msvc-dev-cmd@v2
+
+    - name: Install MSYS2 compilers (Windows)
+      if: matrix.os == 'windows-latest' && (matrix.cpp_compiler == 'g++' || matrix.cpp_compiler == 'clang++')
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >
+          gcc
+          clang
+
+    - name: Install dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: choco install ninja -y
 
     - name: Install dependencies (macOS)
       if: matrix.os == 'macos-latest'
@@ -78,7 +88,7 @@ jobs:
         -S ${{ github.workspace }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
       
     - name: Determine Executable Name
       id: exe-name
@@ -93,5 +103,5 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: executable-${{ matrix.os }}-${{ matrix.c_compiler }}
+        name: executable-${{ matrix.os }}-${{ matrix.cpp_compiler }}
         path: ${{ steps.exe-name.outputs.exe_path }}
