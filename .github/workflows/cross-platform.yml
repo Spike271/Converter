@@ -3,7 +3,7 @@ name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev", "main" ]
 
 permissions:
   contents: write
