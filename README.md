@@ -11,7 +11,7 @@ using the [Slint](https://github.com/slint-ui/slint) library for UI representati
 
 Before building or running this project, ensure you have the following dependencies installed:
 
-- C++20 compatible compiler (e.g., GCC 10+, Clang 10+, or MSVC 19.29+)
+- C++20 compatible compiler (e.g., GCC 13+, Clang 10+, or MSVC 19.29+)
 - [Rust](https://www.rust-lang.org/tools/install) (1.82 or higher)
 - [CMake](https://cmake.org/documentation/) (3.30 or higher)
 - [Slint](https://github.com/slint-ui/slint)

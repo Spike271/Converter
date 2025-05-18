@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.30)
 project(my_application LANGUAGES CXX VERSION 1.1)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSLINT_STYLE=fluent-dark")
 
@@ -10,12 +12,6 @@ if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 elseif (UNIX AND NOT APPLE)
-    option(BUILD_STATIC "Build static executable" OFF)
-
-    if (BUILD_STATIC)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-    endif ()
-
     find_package(X11 REQUIRED)
     # Uncomment if using Wayland
     # find_package(Wayland REQUIRED)

@@ -1,10 +1,12 @@
+
 name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -12,37 +14,39 @@ jobs:
 
     strategy:
       fail-fast: false
+
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        build_type: [Release]
-        include:
-          # Windows configurations
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: windows-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: windows-latest
-            c_compiler: clang
-            cpp_compiler: clang++
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        build_type: [ Release ]
+        cpp_compiler: [ clang++, cl, g++ ]
+
+        exclude:
           # Linux configurations
           - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
+            cpp_compiler: cl
+
           # macOS configurations
           - os: macos-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-          - os: macos-latest
-            c_compiler: gcc
-            cpp_compiler: g++
+            cpp_compiler: cl
 
     steps:
     - uses: actions/checkout@v4
+
+      # Windows compiler setup
+    - name: Setup MSVC (Windows)
+      if: matrix.os == 'windows-latest' && matrix.cpp_compiler == 'cl'
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Install latest g++ compiler (Windows)
+      if: matrix.os == 'windows-latest' && (matrix.cpp_compiler == 'g++')
+      id: install_cc
+      uses: rlalik/setup-cpp-compiler@master
+      with:
+        compiler: 'latest'
+
+    - name: Install dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: choco install ninja -y
 
     - name: Install dependencies (macOS)
       if: matrix.os == 'macos-latest'
@@ -61,18 +65,76 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Configure CMake
+    - name: Configure CMake (For windows && g++)
+      if: matrix.os == 'windows-latest' && (matrix.cpp_compiler == 'g++')
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_CXX_COMPILER=C:\ProgramData\mingw64\mingw64\bin\g++.exe
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -G Ninja
         -S ${{ github.workspace }}
 
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Configure CMake (For windows !g++)
+      if: matrix.os == 'windows-latest' && (matrix.cpp_compiler == 'clang++' || matrix.cpp_compiler == 'cl')
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -G Ninja
+        -S ${{ github.workspace }}
 
-    - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --build-config ${{ matrix.build_type }}
+    - name: Configure CMake (Other platforms)
+      if: matrix.os == 'macos-latest' || matrix.os == 'ubuntu-latest'
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -G Ninja
+        -S ${{ github.workspace }}   
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
+
+    - name: List build artifacts (Debug)
+      run: |
+        echo "Build directory contents:"
+        ls -R ${{ steps.strings.outputs.build-output-dir }}
+
+    - name: Determine Executable Name
+      id: exe-name
+      shell: bash
+      run: |
+        EXE_PATH="${{ steps.strings.outputs.build-output-dir }}/my_application"
+        EXE_POPUP_PATH="${{ steps.strings.outputs.build-output-dir }}"
+        DLL_PATH="${{ steps.strings.outputs.build-output-dir }}"
+        VB_PATH="${{ steps.strings.outputs.build-output-dir }}"
+        
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          EXE_PATH="${EXE_PATH}.exe"
+          EXE_POPUP_PATH="${EXE_POPUP_PATH}/Popup_Window.exe"
+          DLL_PATH="${DLL_PATH}/slint_cpp.dll"
+          VB_PATH="${VB_PATH}/run_hidden.vbs"
+        elif [ "${{ matrix.os }}" = "macos-latest" ]; then
+          EXE_PATH="${EXE_PATH}.app"
+          EXE_POPUP_PATH=""
+          DLL_PATH=""
+          VB_PATH=""
+        else
+          DLL_PATH="/home/runner/work/Converter/Converter/build/_deps/slint-build/libslint_cpp.so"
+          EXE_POPUP_PATH=""
+          VB_PATH=""
+        fi
+        echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
+        echo "exe2_path=$EXE_POPUP_PATH" >> $GITHUB_OUTPUT
+        echo "dll_path=$DLL_PATH" >> $GITHUB_OUTPUT
+        echo "vbs_path=$VB_PATH" >> $GITHUB_OUTPUT
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: executable-${{ matrix.os }}-${{ matrix.cpp_compiler }}
+        path: |
+          ${{ steps.exe-name.outputs.exe_path }}
+          ${{ steps.exe-name.outputs.dll_path }}
+          ${{ steps.exe-name.outputs.vbs_path }}
+          ${{ steps.exe-name.outputs.exe2_path }}
