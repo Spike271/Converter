@@ -45,6 +45,8 @@ elseif (UNIX AND NOT APPLE)
     install(TARGETS "Popup_Window" RUNTIME DESTINATION bin)
 endif ()
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY SLINT_EMBED_RESOURCES embed-files)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE Slint::Slint)
 target_link_libraries("Popup_Window" PRIVATE Slint::Slint)
 
