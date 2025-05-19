@@ -116,8 +116,8 @@ jobs:
           VB_PATH="${VB_PATH}/run_hidden.vbs"
         elif [ "${{ matrix.os }}" = "macos-latest" ]; then
           EXE_PATH="${EXE_PATH}.app"
+          DLL_PATH="/Users/runner/work/Converter/Converter/build/_deps/slint-build/libslint_cpp.dylib"
           EXE_POPUP_PATH=""
-          DLL_PATH=""
           VB_PATH=""
         else
           DLL_PATH="/home/runner/work/Converter/Converter/build/_deps/slint-build/libslint_cpp.so"
