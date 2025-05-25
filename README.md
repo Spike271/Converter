@@ -1,4 +1,10 @@
-# Converter
+<div align="center">
+
+# CONVERTER
+
+[![Building for all platforms](https://github.com/Spike271/Converter/actions/workflows/cross-platform.yml/badge.svg)](https://github.com/Spike271/Converter/actions/workflows/cross-platform.yml)
+
+</div>
 
 A simple converter application that transforms **prefix**, **infix**, and **postfix** expressions into each other. Built
 using the [Slint](https://github.com/slint-ui/slint) library for UI representation.
