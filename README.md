@@ -64,15 +64,11 @@ git clone -j8 https://github.com/Spike271/Converter.git
    ninja
    ```
 
-## Warning for Windows Users
+## Note
 
-During the build process on Windows, Windows defender can take down some files that can cause the build to fail.
-
-### What You Can Do:
-
-1. **Whitelist the Build Folder:**
-   Add the build folder as an exception in Windows Defender to avoid interruptions.
----
+> During the build process on Windows, Windows defender can take down some files that can cause the build to fail.
+> 
+> Add the build folder as an exception in Windows Defender to avoid interruptions.
 
 ## Usage
 
